@@ -1,0 +1,93 @@
+import java.util.HashMap;
+import java.util.Scanner;
+
+class Student {
+    private int studentid;
+    private String studentname;
+    private int studentage;
+
+    public Student(int id, String name, int age) {
+        this.studentid = id;
+        this.studentname = name;
+        this.studentage = age;
+    }
+
+    public void get() {
+        System.out.println("ID: " + this.studentid);
+        System.out.println("Name: " + this.studentname);
+        System.out.println("Age: " + this.studentage);
+        System.out.println("---------------------------------");
+    }
+}
+
+public class HostelManagement {
+    private static Scanner input = new Scanner(System.in);
+    private static HashMap<Integer, Student> accounts = new HashMap<>();
+
+    public static void main(String[] args) {
+        int choice;
+        do {
+            System.out.println("\n----Enter the options correctly----");
+            System.out.println("1. Create Student ID");
+            System.out.println("2. All Student Details");
+            System.out.println("3. Delete Student ID");
+            System.out.println("4. Exit");
+            System.out.print("Enter choice: ");
+            choice = input.nextInt();
+            input.nextLine(); // consume leftover newline
+
+            switch (choice) {
+                case 1 -> create();
+                case 2 -> getAllDetails();
+                case 3 -> delete();
+                case 4 -> System.out.println("Thanks for using Hostel portal");
+                default -> System.out.println("Invalid entry, please check the options");
+            }
+        } while (choice != 4);
+    }
+
+    private static void create() {
+        System.out.print("Enter the student ID: ");
+        int id = input.nextInt();
+        input.nextLine(); // consume newline
+        if (accounts.containsKey(id)) {
+            System.out.println("ID Already Exists");
+            return;
+        }
+
+        System.out.print("Enter the student name: ");
+        String name = input.nextLine();
+
+        System.out.print("Enter the student age: ");
+        int age = input.nextInt();
+        input.nextLine(); // consume newline
+
+        Student std = new Student(id, name, age);
+        accounts.put(id, std);
+        System.out.println("ID created Successfully");
+    }
+
+    private static void delete() {
+        System.out.print("Enter the student ID to delete: ");
+        int idd = input.nextInt();
+        input.nextLine(); // consume newline
+
+        if (accounts.containsKey(idd)) {
+            accounts.remove(idd);
+            System.out.println("Successfully removed");
+        } else {
+            System.out.println("ID not found");
+        }
+    }
+
+    private static void getAllDetails() {
+        if (accounts.isEmpty()) {
+            System.out.println("No student IDs found");
+            return;
+        }
+        System.out.println("\n--- All Student Details ---");
+        for (Student s : accounts.values()) {
+            s.get();
+        }
+    }
+}
